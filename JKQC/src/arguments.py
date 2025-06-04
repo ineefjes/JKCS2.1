@@ -136,6 +136,7 @@ def arguments(argument_list = []):
   Qqha = 0 #Run the QHA
   Qt = missing
   Qp = missing
+  Qafc = 0 #Run antiQHA with vib. frequency cutoff
   Qfc = 0 #Run QHA with vib. frequency cutoff
   Qanh = "1"
   Qanharm = 0 #To collect anharmonicities from QC output
@@ -931,7 +932,8 @@ def arguments(argument_list = []):
       continue
     if last == "-antifc":
       last = ""
-      Qfc = -float(i)
+      Qafc = float(i)
+      Qfc = float(i)
       continue
     if i == "-id":
       Qid = 1
