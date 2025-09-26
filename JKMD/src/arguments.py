@@ -83,7 +83,7 @@ def print_help():
   SIMULATION_ARGUMENTS:
     [SPECIE] [[SPECIE(S) CONSTRAINTS]] [[OTHER SPECIE]] [CALCULATOR] [THERMOSTAT] [SIMULATION_SETUP]
 
-  SPECIE:
+  SPECIES:
     -index <int>           index of structure to be taken from pickle file [default = -1 (i.e., last)]
     -indexrange <int>      random index from the range from <int> to -1 (e.g., -10)
     <file>                 xyz or pickle file (last structure taken)
@@ -110,7 +110,8 @@ def print_help():
     -EF_c_COM <array>             constant ext. force on COM (e.g., [1,0,0]) 
     -EF_h_COM_COM <float> <float> harmonic potential between COMs of last two molecules [harm k_bias]
     -EF_h_RMSD <float> <float>    <testing reaction RMSD constrain> [harmonic k_bias]
-    UMBRELLA SAMPLING:
+
+  UMBRELLA SAMPLING:
     -harm <float>      add harmonic potential COM <float> distance constrain [2 species]
     -k_bias <float>    strength of the biasing harmonic potential in kcal/mol/A^2 [e.g., 100]
     -slow <int>        linearly increases the US potential in <int> steps [default = 0]
@@ -126,7 +127,8 @@ def print_help():
      -EFD               use EFD module {SchNetPack}
      -cutoff <float>    cutoff radius [Angstrom] {SchNetPack} [default = 10.0]
      -dl,-deltalearning use delta learning +GFN1-xTB {SchNetPack}
-    -pn_model <path>  Neural Network model defined by path {PhysNet_DER} [requires input.inp too]    -aiment <path>    AIMNet model defined by path {AIMNet}
+    -pn_model <path>  Neural Network model defined by path {PhysNet_DER} [requires input.inp too]    
+    -aimnet <path>    AIMNet model defined by path {AIMNet}
     -orca "<str>"     QC method (e.g., "XTB1" or "B97-3c") {ORCA}
                       -additional setup might be required!!!
     -max_iter <int>   maximum number of SCF iterations (e.g., 50) [default = 250] {TBlite}
