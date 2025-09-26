@@ -22,7 +22,7 @@ print(" ----- Post-Processing ----- ")
 
 Qfit = int(sys.argv[2])
 Qflatten = float(sys.argv[3])
-T = float(sys.argv[4]) #K
+T = float(sys.argv[6]) #K
 kBT = T*kB #Eh
 
 ### PREPARING DATA ###
@@ -53,6 +53,9 @@ if Qflatten > 0:
  
 plt.figure()
 plt.plot(PMF_1D[:, 0], PMF_1D_orginal[:, 1]*Eh2kcalmol, marker='.', linestyle='-', color='b')
+#TODO remove 2 lines
+#plt.plot(PMF_3D[:, 0], PMF_3D[:, 1]*Eh2kcalmol, marker='.', linestyle='-', color='g')
+#plt.plot(PMF_3D[:, 0], 2*kBT*np.log(PMF_3D[:, 0])*Eh2kcalmol, marker='.', linestyle='-', color='r')
 if Qflatten > 0:
   plt.plot(PMF_1D[mask, 0], PMF_1D[mask, 1]*Eh2kcalmol, marker='.', linestyle='-', color='g')
 plt.xlabel('coordinate')
@@ -122,8 +125,8 @@ print("Multiplier = "+str(mult)+" [1 or 2 for symmetric reactions]")
 ### INTEGRATION/SUM ###
 dx = PMF_1D[1, 0] - PMF_1D[0, 0]
 sum_element = np.column_stack((PMF_1D[:, 0], np.exp(-PMF_1D[:, 1]/kBT)*4*pi*PMF_1D[:, 0]**2*dx))
-sum_element_ivo = np.column_stack((PMF_1D[:, 0], np.exp(-PMF_1D[:, 1]/kBT)*PMF_1D[:, 0]**2))
-sum_table_ivo = np.array([np.array([sum_element[i,0], np.sum(sum_element_ivo[i,1])]) for i in range(0, len(sum_element))])
+#sum_element_ivo = np.column_stack((PMF_1D[:, 0], np.exp(-PMF_1D[:, 1]/kBT)*PMF_1D[:, 0]**2))
+#sum_table_ivo = np.array([np.array([sum_element[i,0], np.sum(sum_element_ivo[i,1])]) for i in range(0, len(sum_element))])
 sum_table = np.array([np.array([sum_element[i,0], np.sum(sum_element[0:i,1])]) for i in range(0, len(sum_element))])
 F_well = sum_table[-1, 1] #Eh
 F_table = -kBT*np.log(np.exp(De/kBT)*sum_table[:, 1]/V0/mult) 
@@ -132,6 +135,10 @@ F = F_table[max_index] #Eh
 plt.figure()
 plt.plot(sum_table[:, 0], F_table[:]*Eh2kcalmol, marker='.', linestyle='-', color='b')
 #plt.plot(sum_table[:, 0], sum_table_ivo[:,1], marker='.', linestyle='-', color='b')
+#print((sum_element[:, 1]-sum_element[-1, 1]))
+#print((np.max(sum_element[:, 1])-sum_element[-1, 1]))
+#print(np.max(F_table[0])-F_table[-1])
+plt.plot(sum_element[:, 0], ((sum_element[:, 1]-sum_element[-1, 1])/(np.max(sum_element[:, 1])-sum_element[-1, 1])*(F_table[1]-F_table[max_index])*Eh2kcalmol+F_table[max_index]*Eh2kcalmol), marker='.', linestyle='-', color='r')
 plt.xlabel('coordinate')
 plt.ylabel('dF (kcal/mol)')
 plt.savefig('dF_convergence.png')
